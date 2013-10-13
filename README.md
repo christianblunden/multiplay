@@ -4,11 +4,11 @@
 
 This project was first put together for the October 2013 uSwitch London Clojure Dojo.
 
-To get started 
+To get started:
 
 ``` bash
 lein run
-
+```
 
 The skeleton engine was provided by 3rd place Clojure Cup 2013 team:
 
