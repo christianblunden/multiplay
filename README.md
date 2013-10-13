@@ -10,6 +10,15 @@ To get started:
 lein run
 ```
 
+## Build your own game
+
+The bulk of the game play has been left blank so that you can build your own game.  The essential files that you need to "fill in the blanks" include:
+
+``` clojure
+  (ns multiplay.game.core)  ;; clj
+  (ns multiplay.views.arena) ;; cljs
+```
+
 ## Acknowledgements
 
 The skeleton engine was provided by 3rd place Clojure Cup 2013 team:
