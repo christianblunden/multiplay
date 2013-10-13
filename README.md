@@ -10,11 +10,11 @@ To get started:
 lein run
 ```
 
+## Acknowledgements
+
 The skeleton engine was provided by 3rd place Clojure Cup 2013 team:
 
 [Jon Neale](https://github.com/jonneale), [Paul Lam](https://github.com/Quantisan), [Thomas Kristensen](https://github.com/tgk), [Ragnar Dahlen](https://github.com/ragnard)
-
-## Acknowledgements
 
 This project uses the following fantastic libraries:
 
