@@ -1,0 +1,12 @@
+body {
+
+}
+
+#container {
+    width: 100%;
+    text-align:center;
+}
+
+h1, a { font-family: serif;
+        color: yellow;
+        text-shadow: 2px 2px 0 #AAA;}
