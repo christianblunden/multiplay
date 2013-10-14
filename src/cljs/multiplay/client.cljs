@@ -66,24 +66,23 @@
                       #(reset! clicked nil)))
 
 ;; client process
+(defn receive-websocket
+  [[type data :as event] render-channel]
+  (case type
+    :message (go (>! render-channel (reader/read-string data))) ; put game-state to rendering channel
+
+    (log ["Silently ignoring" event])))
 
 (defn spawn-client-process!
-  [ws-in ws-out command-chan render-channel]
+  [ws-send ws-receive command-chan render-channel]
   (go (while true
-        (let [[v c] (alts! [ws-out command-chan])]
-          (condp = c
-            
-            ws-out
-            (do
-              (let [[type data] v]
-                (case type
-                  :message (let [game-state (reader/read-string data)]
-                             (>! render-channel game-state)) ; put game-state to arena channel
-
-                  (log ["Silently ignoring" v]))))
-
-            command-chan
-            (>! ws-in v))))))
+        ; block for input on either websocket or command channel
+        (let [[event channel] (alts! [ws-receive command-chan])]
+          (log ["event received" event])
+          (condp = channel
+            ws-receive (receive-websocket event render-channel)
+            command-chan (>! ws-send event)
+            )))))
 
 ;; main js entry point
 
@@ -91,8 +90,8 @@
   []
   (.log js/console "pong!")
   (let [render-channel (multiplay.views.arena/create!)
-        {:keys [in out]} (websocket/connect! (str "ws://" host))
+        {:keys [ws-send ws-receive]} (websocket/connect! (str "ws://" host))
         command-channel (chan)]
-    (spawn-client-process! in out command-channel render-channel)
+    (spawn-client-process! ws-send ws-receive command-channel render-channel)
     (bind-key-observer command-channel)
     (bind-arrow-click command-channel)))

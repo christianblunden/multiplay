@@ -13,10 +13,16 @@
 
 (defmulti handle-command
   (fn [game-state command]
+    (prn "handle-command" command game-state)
     (first command)))
+
+(defmethod handle-command :default
+  [game-state [command id]]
+  game-state)
 
 (defmethod handle-command :player/leave
   [game-state [command id]]
+
   (assoc game-state :players
          (vec (remove #(= (:id %) id) (:players game-state)))))
 

@@ -8,17 +8,17 @@
 (defn connect!
   [url]
   (let [ws  (goog.net.WebSocket.)
-        in  (chan)
-        out (chan)]
-    (goog.events.listen ws Events/OPENED (fn [e] (put! out [:opened e])))
-    (goog.events.listen ws Events/CLOSED (fn [e] (put! out [:closed e])))
-    (goog.events.listen ws Events/MESSAGE (fn [e] (put! out [:message (.-message e)])))
-    (goog.events.listen ws Events/ERROR (fn [e] (put! out [:error e])))
+        ws-send  (chan)
+        ws-receive (chan)]
+    (goog.events.listen ws Events/OPENED (fn [e] (put! ws-receive [:opened e])))
+    (goog.events.listen ws Events/CLOSED (fn [e] (put! ws-receive [:closed e])))
+    (goog.events.listen ws Events/MESSAGE (fn [e] (put! ws-receive [:message (.-message e)])))
+    (goog.events.listen ws Events/ERROR (fn [e] (put! ws-receive [:error e])))
     (.open ws url)
-    (go (loop [msg (<! in)]
+    (go (loop [msg (<! ws-send)]
           (when msg
             (.send ws msg)
-            (recur (<! in)))))
-    {:in in :out out}))
+            (recur (<! ws-send)))))
+    {:ws-send ws-send :ws-receive ws-receive}))
 
 
