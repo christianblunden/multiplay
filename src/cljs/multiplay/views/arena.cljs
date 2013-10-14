@@ -13,13 +13,13 @@
 
 (defn draw-players 
   [context {:keys [players]}]
-  (set! (.-font context) "30px Arial")
+  (set! (.-font context) "12px Arial")
   (set! (.-textAlign context) "start")
   (set! (.-fillStyle context) "#000")
-  (doseq [{:keys [id name position]} players]
-    (log ["draw-players" id name position])
+  (doseq [{id :id name :name [x y] :position :as player} players]
+    (log ["draw-player" player])
     (doto context
-      (.fillText (str "Player " id " : " name) (position 0) (position 1)))))
+      (.fillText (str "Player " id " : " name) x y))))
 
 (defn update-view
   [canvas game-state]

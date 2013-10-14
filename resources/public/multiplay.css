@@ -8,5 +8,5 @@ body {
 }
 
 h1, a { font-family: serif;
-        color: yellow;
-        text-shadow: 2px 2px 0 #AAA;}
+        color: #999;
+        text-shadow: 2px 2px 0 #333;}
