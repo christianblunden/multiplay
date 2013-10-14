@@ -10,6 +10,17 @@ To get started:
 lein run
 ```
 
+or play in the repl
+
+``` bash
+lein repl
+```
+
+``` clojure
+(user/go!)    ;start server
+(user/reset)  ;reset server
+```
+
 ## Build your own game
 
 The bulk of the game play has been left blank so that you can build your own game.  The essential files that you need to "fill in the blanks" include:
