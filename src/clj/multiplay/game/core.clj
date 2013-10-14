@@ -8,6 +8,21 @@
     :name name
     :score 0})
 
+
+(defn move-up
+  [{[x y] :position :as player}]
+    (assoc player :position [x (dec y)]))
+
+(defn move-down 
+  [{[x y] :position :as player}]
+    (assoc player :position [x (inc y)]))
+
+(defn update-player [player-to-update action {:keys [players]}]
+  (map (fn [{:keys [id] :as player}]
+    (if (= id player-to-update)
+      (action player)
+      player)) players))
+
 (def initial-game-state
   {:players []})
 
@@ -32,11 +47,11 @@
 
 (defmethod handle-command :player/up
   [game-state [command id]]
-  game-state)
+  (assoc game-state :players (update-player id move-up game-state)))
 
 (defmethod handle-command :player/down
   [game-state [command id]]
-  game-state)
+  (assoc game-state :players (update-player id move-down game-state)))
 
 (defn- handle-commands
   [game-state commands]
